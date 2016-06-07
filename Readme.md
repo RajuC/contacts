@@ -1,11 +1,8 @@
-basic Nodejs project to build a contacts list
+### basic Nodejs project to build a contacts list
 
-git clone 
+git clone git@github.com:RajuC/contacts.git
 
-cd contacts
-
-npm install
-
-http://localhost:3000
-
-enter the details -- add/delete/edit/update
+- cd contacts/
+- npm install
+- http://localhost:3000
+- enter the details -- add/delete/edit/update

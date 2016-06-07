@@ -50,4 +50,9 @@ angular.module('MyContacts', [])
 
 	    };
 
+
+	    $scope.clearContact = function(){
+	    	$scope.contact="";
+	    };
+
     });

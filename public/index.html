@@ -56,14 +56,14 @@
 				</td>
 
 				<td>
-					<input name="number" class="form-control" ng-model="contact.number" placeholder="(000)-123-1234" ng-pattern="/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/" required>
+					<input name="number" class="form-control" ng-model="contact.number"  placeholder="(000)-123-1234" ng-pattern="/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/" required>
 					<span style="color:red" ng-show="myForm.number.$dirty && myForm.number.$invalid">
 					<span ng-show="myForm.number.$error.required">Number is required.</span>
 					<span ng-show="myForm.number.$error.pattern">Invalid Number address.</span>
 					</span>
 				</td>
 				<td>
-					<button class="btn btn-primary" ng-disabled="myForm.user.$dirty && myForm.user.$invalid || myForm.email.$dirty && myForm.email.$invalid || myForm.number.$dirty && myForm.number.$invalid" ng-click="addContact();">Add Contact</button>
+					<button class="btn btn-primary" ng-disabled="myForm.$invalid || myForm.$required" ng-click="addContact();">Add Contact</button>
 				</td>
 				<td>
 					<button class="btn btn-info" ng-click="updateContact();">Update</button>&nbsp;&nbsp;<button class="btn btn-info" ng-click="clearContact();">Clear</button>

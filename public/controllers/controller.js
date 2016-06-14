@@ -25,22 +25,11 @@ var app = angular.module('MyContacts',['ui.bootstrap']);
 	    $scope.addContact = function(){
 	    	console.log("Post object ....");
 	    	console.log($scope.contact);
-	    	if ( typeof $scope.contact.name === "undefined" || $scope.contact.name == "") {
-    			alert('Enter UserName'+ $scope.contact.name);
-			}
-			else if (typeof $scope.contact.email === "undefined" || $scope.contact.email == "") {
-    			alert('Enter Email Address');
-			}
-			else if (typeof $scope.contact.number === "undefined" || $scope.contact.number == "") {
-    			alert('Enter 10 digit Number');
-			}
-			else {
 	    	$http.post('/add_contact',$scope.contact).success(function(response){
 	    		console.log("Post object sucess response ....");
 	    		refresh();
 				location.reload();
-	    		});
-	    	}	
+	    		});	
 	    }; 
 
 	    $scope.delContact = function(id){

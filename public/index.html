@@ -7,6 +7,8 @@
 
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+   <script type="text/javascript" src="js/bootstrap-filestyle.min.js"> </script>
 	<title>Contact List App</title>	
 </head>
 <body>
@@ -21,12 +23,12 @@
 		</span>
 
 	</div>
-<form name="myForm">
+<form name="myForm" action="/upload" enctype="multipart/form-data" method="post">
 	<table class="table">
 		<thead>
 			<tr>
-                  <th ng-click = "sort('name')">Name
-                    <span class="glyphicon sort-icon" ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+                  <th ng-click = "sort('user')">Name
+                    <span class="glyphicon sort-icon" ng-show="sortKey=='user'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                   </th>
                   <th ng-click="sort('email')">Email
                     <span class="glyphicon sort-icon" ng-show="sortKey=='email'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
@@ -34,13 +36,14 @@
                   <th ng-click="sort('number')">Number
                     <span class="glyphicon sort-icon" ng-show="sortKey=='number'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                   </th>
-				  <th>&nbsp;</th>
+				  <th>Display Image</th>
+
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td>
-					<input name= "user" class="form-control" ng-model="contact.name" type="text" placeholder="firstname lastname" ng-pattern= "/^[a-zA-Z\s]*$/" required>
+					<input name= "user" class="form-control" ng-model="contact.user" type="text" placeholder="firstname lastname" ng-pattern= "/^[a-zA-Z\s]*$/" required>
 					<span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
 					<span ng-show="myForm.user.$error.required">Username is required</span>
 					<span ng-show="myForm.user.$error.pattern">Invalid Name.</span>
@@ -63,7 +66,17 @@
 					</span>
 				</td>
 				<td>
-					<button class="btn btn-primary" ng-disabled="myForm.$invalid || myForm.$required" ng-click="addContact();">Add Contact</button>
+
+			        <div class="form-group">
+    					<input type="file" class="filestyle" data-input="false" name="photo" file-model="myFile">
+    				</div>
+<!--
+					<button ng-click="uploadFile()">upload me</button>
+-->
+
+				</td>
+				<td>
+					<button class="btn btn-primary" ng-disabled="myForm.$invalid || myForm.$required" ng-click="uploadFile();">Add Contact</button>
 				</td>
 				<td>
 					<button class="btn btn-info" ng-click="updateContact();">Update</button>&nbsp;&nbsp;<button class="btn btn-info" ng-click="clearContact();">Clear</button>
@@ -72,9 +85,10 @@
 			</tr>
 
 			<tr ng-repeat="contact in contactList | orderBy: sortKey: reverse | filter: searchText | startFrom: (currentPage - 1) * pageSize | limitTo : pageSize ">
-				<td>{{contact.name}}</td>
+				<td>{{contact.user}}</td>
 				<td>{{contact.email}}</td>
 				<td>{{contact.number}}</td>
+				<td><img src="/{{contact.filename}}" alt="{{contact.filename}}" height="75" width="75"></td>
 				<td><button class="btn btn-warning" ng-click="editContact(contact._id);">Edit</button></td>	
 				<td><button class="btn btn-danger" ng-click="delContact(contact._id);">Delete</button></td>
 			</tr>

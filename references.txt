@@ -10,3 +10,9 @@ http://code.ciphertrick.com/2015/06/01/search-sort-and-pagination-ngrepeat-angul
 validation
 http://www.w3schools.com/angular/tryit.asp?filename=try_ng_validate
 https://www.sitepoint.com/easy-form-validation-angularjs-ngmessages/
+
+upload
+https://www.youtube.com/watch?v=vLHgpOG1cW4
+https://codeforgeek.com/2014/11/file-uploads-using-node-js/
+view-source:http://fiddle.jshell.net/JeJenny/ZG9re/show/light/
+http://shazwazza.com/post/uploading-files-and-json-data-in-the-same-request-with-angular-js/

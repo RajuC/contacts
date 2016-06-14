@@ -1,7 +1,43 @@
 var app = angular.module('MyContacts',['ui.bootstrap']);
 
-    app.controller('AppCtrl', function($scope, $http) {
 
+
+app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);
+
+
+app.service('fileUpload', ['$http', function ($http) {
+    this.uploadFileToUrl = function(file, uploadUrl){
+        var fd = new FormData();
+        fd.append('file', file);
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(function(){
+        })
+        .error(function(){
+        });
+    }
+}]);
+
+
+
+	app.controller('AppCtrl', ['$scope','$http','fileUpload', function($scope, $http, fileUpload){
+    
 		$scope.contactList = [];
 		$scope.pageSize = 5;
 		$scope.currentPage = 1;
@@ -11,7 +47,8 @@ var app = angular.module('MyContacts',['ui.bootstrap']);
 		    $scope.sortKey = keyname;   //set the sortKey to the param passed
 		    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
 		}
- 
+
+
     	var refresh= function()  {
 	        $http.get('/contacts').success(function(response){
 	        console.log("Hello from controller req for contacts");
@@ -22,6 +59,16 @@ var app = angular.module('MyContacts',['ui.bootstrap']);
 
     	refresh();
 
+	    $scope.uploadFile = function(){
+	        var file = $scope.myFile;
+	        console.log('file is sending for upload...' );
+	        var uploadUrl = "/upload";
+	        fileUpload.uploadFileToUrl(file, uploadUrl);
+	        console.log("Post object sucess response ....");
+	    	refresh();
+			location.reload();
+	    };
+    
 	    $scope.addContact = function(){
 	    	console.log("Post object ....");
 	    	console.log($scope.contact);
@@ -66,9 +113,10 @@ var app = angular.module('MyContacts',['ui.bootstrap']);
 	    	$scope.contact="";
 	    };
 
-    })
+    }])
     .filter('startFrom',function(){
 	  	return function(data, start){
 	    return data.slice(start);
 	  }
 	});    
+

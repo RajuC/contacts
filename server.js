@@ -1,11 +1,33 @@
 var express = require("express");
 var mongojs = require("mongojs");
 var bodyParser = require("body-parser");
+var multer = require("multer");
 var app = express();
 var db = mongojs('contacts',['contacts']);
 app.use(bodyParser.json());
 
+var _ = require('underscore');
+
 app.use(express.static(__dirname + "/public"));
+
+app.use(express.static(__dirname + "/upload"));
+
+//app.use(multer({dest: './upload/'}));
+//app.use(multer({dest:'./upload/'}).single('photo'));
+
+
+var storage =   multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './upload');
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.fieldname + '-' + Date.now()+ '.jpg');
+  }
+});
+
+var upload = multer({ storage : storage}).single('photo');
+
+
 
 app.get('/resp',function (req,res){
 		console.log("returning first response");
@@ -56,6 +78,44 @@ app.put('/update_contact/:id',function(req,res){
 	});
 });
 
+
+app.post('/upload',function(req,res){
+    upload(req,res,function(err) {
+        if(err) {
+            return res.end("Error uploading file.");
+        }
+    console.log("received a POST request for adding contact to db...");
+    console.log(req.body);
+    console.log("================");
+    console.log(req.file);      
+	var newdata = {"path" : req.file.path,"filename" : req.file.filename};
+	var target = _.extend(req.body, newdata);
+//	absorb(fullbody, newdata);
+//	var fullbody = $.extend(true, req.body, newdata);
+	console.log("object stored in DB...");	
+    console.log(target);
+	db.contacts.insert(target,function(err,docs){
+		console.log("File is uploaded...");
+		res.redirect('http://localhost:3000');
+    	});
+	});
+});
+
+
+
+/*
+	app.post('/upload', function(req, res){
+		console.log(req);
+		console.log("body");
+		console.log(req.body);
+		console.log("1==============");
+		console.log(req.file);
+		console.log("2==============");		
+//		res.json({success: true});
+		res.end("File is uploaded");
+	});
+
+*/	
 
 app.listen(3000);
 console.log("server running on port 3000 .......");

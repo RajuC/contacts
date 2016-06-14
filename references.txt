@@ -1,0 +1,12 @@
+references
+
+
+pagination:
+https://www.youtube.com/watch?v=3GXspIuEDb0
+
+search and sort:
+http://code.ciphertrick.com/2015/06/01/search-sort-and-pagination-ngrepeat-angularjs/
+
+validation
+http://www.w3schools.com/angular/tryit.asp?filename=try_ng_validate
+https://www.sitepoint.com/easy-form-validation-angularjs-ngmessages/

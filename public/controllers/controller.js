@@ -1,12 +1,22 @@
-angular.module('MyContacts', [])
+var app = angular.module('MyContacts',['ui.bootstrap']);
 
-    .controller('AppCtrl', function($scope, $http) {
+    app.controller('AppCtrl', function($scope, $http) {
 
+		$scope.contactList = [];
+		$scope.pageSize = 5;
+		$scope.currentPage = 1;
+
+
+		$scope.sort = function(keyname){
+		    $scope.sortKey = keyname;   //set the sortKey to the param passed
+		    $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+		}
+ 
     	var refresh= function()  {
 	        $http.get('/contacts').success(function(response){
 	        console.log("Hello from controller req for contacts");
 	        $scope.contactList = response;  
-	       	$scope.contact="";
+	       	$scope.contact=null;
 	        });
     	};
 
@@ -15,10 +25,22 @@ angular.module('MyContacts', [])
 	    $scope.addContact = function(){
 	    	console.log("Post object ....");
 	    	console.log($scope.contact);
+	    	if ( typeof $scope.contact.name === "undefined" || $scope.contact.name == "") {
+    			alert('Enter UserName'+ $scope.contact.name);
+			}
+			else if (typeof $scope.contact.email === "undefined" || $scope.contact.email == "") {
+    			alert('Enter Email Address');
+			}
+			else if (typeof $scope.contact.number === "undefined" || $scope.contact.number == "") {
+    			alert('Enter 10 digit Number');
+			}
+			else {
 	    	$http.post('/add_contact',$scope.contact).success(function(response){
 	    		console.log("Post object sucess response ....");
 	    		refresh();
-	    	});
+				location.reload();
+	    		});
+	    	}	
 	    }; 
 
 	    $scope.delContact = function(id){
@@ -27,8 +49,8 @@ angular.module('MyContacts', [])
 	    	console.log("Deletes object sucess response ....");
 	    	refresh();
 	    });
-
 	    };
+
 
 	   	$scope.editContact = function(id){
 	    console.log("Edit object ...." + id);
@@ -55,4 +77,9 @@ angular.module('MyContacts', [])
 	    	$scope.contact="";
 	    };
 
-    });
+    })
+    .filter('startFrom',function(){
+	  	return function(data, start){
+	    return data.slice(start);
+	  }
+	});    
